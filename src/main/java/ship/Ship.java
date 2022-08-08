@@ -1,6 +1,6 @@
-package Ship;
+package ship;
 
-import Board.Square;
+import board.Square;
 
 import java.util.List;
 

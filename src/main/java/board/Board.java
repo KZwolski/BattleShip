@@ -1,8 +1,6 @@
-package Board;
+package board;
 
-import java.util.List;
-
-public class Board {
+public class Board extends BoardFactory {
     private final int BOARDSIZE = 10;
 
     private Square[][] ocean = new Square[BOARDSIZE][BOARDSIZE];

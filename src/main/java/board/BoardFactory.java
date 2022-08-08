@@ -1,6 +1,6 @@
-package Board;
+package board;
 
-public class BoardFactory {
+public abstract class BoardFactory {
 
     public void manualPlacement(){
 

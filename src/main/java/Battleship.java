@@ -1,4 +1,4 @@
-import Board.Board;
+import board.Board;
 
 public class Battleship {
     public static void main(String[] args) {

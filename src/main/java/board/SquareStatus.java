@@ -1,4 +1,4 @@
-package Board;
+package board;
 
 public enum SquareStatus {
     EMPTY("E"), SHIP("S"), HIT("H"), MISSED("M");

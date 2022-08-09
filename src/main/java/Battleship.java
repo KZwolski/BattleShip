@@ -1,6 +1,7 @@
 import board.*;
 import utilities.Display;
 import utilities.Input;
+import ship.ShipType;
 
 public class Battleship {
     public static void main(String[] args) {

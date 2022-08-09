@@ -10,10 +10,5 @@ public class Battleship {
         printer.welcomeMenu();
         Square[][] ocean = board.getOcean();
         printer.printBoard(ocean);
-        for(int i=0; i<5; i++){
-            board.randomPlacement(board, ShipType.values()[i]);
-            printer.printBoard(ocean);
-        }
-
     }
 }

@@ -1,7 +1,7 @@
 package board;
 
 public enum SquareStatus {
-    EMPTY("."), SHIP("S"), HIT("H"), MISSED("M");
+    EMPTY("E"), SHIP("S"), HIT("H"), MISSED("M");
 
     private final String character;
 

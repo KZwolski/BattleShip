@@ -16,14 +16,6 @@ public class Board extends BoardFactory {
             }
         }
     }
-    public void printBoard(){
-        for (int i = 0; i < BOARD_SIZE; i++){
-            for (int j = 0; j < BOARD_SIZE; j++){
-                System.out.print(ocean[i][j]+ "  ");
-            }
-            System.out.println("");
-        }
-    }
     public Square[][] getOcean() {
         return ocean;
     }

@@ -19,12 +19,25 @@ public abstract class BoardFactory {
         markSquareAsShip(shipType.getLength(), direction, board, cords);
     }
 
+    public void manualPlacement(Board board, ShipType shipType) {
+        System.out.println("You are now placing: " + shipType.toString() + " of length: " + shipType.getLength());
+        int[] coordinates = askForCoordinates();
+        String direction = askForDirection();
+        while (checkAreThereShips(shipType.getLength(), direction, board, coordinates)) {
+            System.out.println("You cannot place ship there :(, try again! ");
+            coordinates = askForCoordinates();
+            direction = askForDirection();
+        }
+        markSquareAsShip(shipType.getLength(), direction, board, coordinates);
+
+    }
+
     public void markSquareAsShip(int shipSize, String direction, Board board, int[] coordinates) {
         Square[][] ocean = board.getOcean();
         for (int i = 0; i < shipSize; i++) {
             if (Objects.equals(direction, "V")) {
                 ocean[coordinates[0] + i][coordinates[1]].setSquareStatus(SquareStatus.valueOf("SHIP"));
-            } else if(Objects.equals(direction, "H")) {
+            } else if (Objects.equals(direction, "H")) {
                 ocean[coordinates[0]][coordinates[1] + i].setSquareStatus(SquareStatus.valueOf("SHIP"));
 
             }
@@ -86,25 +99,13 @@ public abstract class BoardFactory {
                 || (checkIfValidCords(x + 1, y + 1) && Objects.equals(ocean[x + 1][y + 1].getSquareStatus().toString(), "SHIP"));
     }
 
-    public void manualPlacement(Board board, ShipType shipType) {
-        System.out.println("You are now placing: " + shipType.toString() + " of length: " + shipType.getLength());
-        int[] coordinates = askForCoordinates();
-        String direction = askForDirection();
-        while (checkAreThereShips(shipType.getLength(), direction, board, coordinates)) {
-            System.out.println("You cannot place ship there :(, try again! ");
-            coordinates = askForCoordinates();
-            direction = askForDirection();
-        }
-        markSquareAsShip(shipType.getLength(), direction, board, coordinates);
-
-    }
 
     public int[] askForCoordinates() {
-        System.out.println("Please enter x: ");
         Scanner scanner = new Scanner(System.in);
-        int x = scanner.nextInt();
-        System.out.println("Please enter y: ");
-        int y = scanner.nextInt();
+        System.out.println("Please enter coordinates: ");
+        String move = scanner.nextLine().toUpperCase(Locale.ROOT);
+        int x = convertInputIntoRow(move);
+        int y = convertInputIntoColumn(move);
         if (checkIfValidCords(x, y)) {
             return new int[]{x, y};
         } else {
@@ -112,6 +113,16 @@ public abstract class BoardFactory {
             return askForCoordinates();
         }
 
+    }
+
+    public int convertInputIntoRow(String input) {
+        int row = input.charAt(0) - 'A';
+        return row;
+    }
+
+    public int convertInputIntoColumn(String input) {
+        int column = Integer.parseInt(input.substring(1)) - 1;
+        return column;
     }
 
     public String askForDirection() {

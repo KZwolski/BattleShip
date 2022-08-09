@@ -53,13 +53,9 @@ public static void main(String[] args) {
         player.handleShot(computersBoard.getOcean(), playersGuesses.getOcean(),computer, playersGuesses);
         System.out.println("YOUR GUESSES: ");
         display.printBoard(playersGuesses.getOcean());
-        System.out.println("COMPUTERS TURN");
         System.out.println("COMPUTER SHOOTING NOW: ");
         computer.handleShot(playersBoard.getOcean(), computersGuesses.getOcean(),player, computersGuesses);
-        System.out.println("COMPUTERS BOARD");
         display.printBoard(computersBoard.getOcean());
-        System.out.println("COMPUTER GUESSES");
-        display.printBoard(computersGuesses.getOcean());
     }
 }
 }

@@ -1,10 +1,17 @@
 package player;
 
+import board.Board;
+import board.Square;
 import ship.Ship;
 
-public class EasyComputer implements ComputerPlayer{
-    @Override
-    public void addShips(Ship ship) {
+import java.util.List;
 
+public class EasyComputer extends ComputerPlayer{
+    public EasyComputer(Board board) {
+        this.playerName="Computer";
+        this.board = board;
+        this.isAlive = true;
+        this.score=0;
     }
+
 }

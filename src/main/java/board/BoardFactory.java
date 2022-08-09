@@ -45,11 +45,9 @@ public abstract class BoardFactory {
         ArrayList<Square> squares = new ArrayList<>();
         for (int i = 0; i < shipSize; i++) {
             if (Objects.equals(direction, "V")) {
-                ocean[coordinates[0] + i][coordinates[1]].setSquareStatus(SquareStatus.valueOf("SHIP"));
-                squares.add(ocean[coordinates[0] + i][coordinates[1]]);
+                ocean[coordinates[0] + i][coordinates[1]].setSquareStatus(SquareStatus.SHIP);
             } else if (Objects.equals(direction, "H")) {
-                ocean[coordinates[0]][coordinates[1] + i].setSquareStatus(SquareStatus.valueOf("SHIP"));
-                squares.add(ocean[coordinates[0]][coordinates[1] + i]);
+                ocean[coordinates[0]][coordinates[1] + i].setSquareStatus(SquareStatus.SHIP);
             }
         }
         Ship ship = new Ship(squares);
@@ -95,22 +93,22 @@ public abstract class BoardFactory {
 
     public boolean checkVerticalNeighbours(Board board, int x, int y) {
         Square[][] ocean = board.getOcean();
-        return (input.validateCords(x - 1, y) && Objects.equals(ocean[x - 1][y].getSquareStatus().toString(), "SHIP"))
-                || (input.validateCords(x + 1, y) && Objects.equals(ocean[x + 1][y].getSquareStatus().toString(), "SHIP"));
+        return (input.validateCords(x - 1, y) && ocean[x - 1][y].getSquareStatus().equals(SquareStatus.SHIP))
+                || (input.validateCords(x + 1, y) && ocean[x + 1][y].getSquareStatus().equals(SquareStatus.SHIP));
     }
 
     public boolean checkHorizontalNeighbours(Board board, int x, int y) {
         Square[][] ocean = board.getOcean();
-        return (input.validateCords(x, y - 1) && Objects.equals(ocean[x][y - 1].getSquareStatus().toString(), "SHIP"))
-                || (input.validateCords(x, y + 1) && Objects.equals(ocean[x][y + 1].getSquareStatus().toString(), "SHIP"));
+        return (input.validateCords(x, y - 1) && ocean[x][y - 1].getSquareStatus().equals(SquareStatus.SHIP))
+                || (input.validateCords(x, y + 1) && ocean[x][y + 1].getSquareStatus().equals(SquareStatus.SHIP));
     }
 
     public boolean checkEdgeNeighbours(Board board, int x, int y) {
         Square[][] ocean = board.getOcean();
-        return (input.validateCords(x - 1, y - 1) && Objects.equals(ocean[x - 1][y - 1].getSquareStatus().toString(), "SHIP"))
-                || (input.validateCords(x - 1, y + 1) && Objects.equals(ocean[x - 1][y + 1].getSquareStatus().toString(), "SHIP"))
-                || (input.validateCords(x + 1, y - 1) && Objects.equals(ocean[x + 1][y - 1].getSquareStatus().toString(), "SHIP"))
-                || (input.validateCords(x + 1, y + 1) && Objects.equals(ocean[x + 1][y + 1].getSquareStatus().toString(), "SHIP"));
+        return (input.validateCords(x - 1, y - 1) && ocean[x - 1][y - 1].getSquareStatus().equals(SquareStatus.SHIP))
+                || (input.validateCords(x - 1, y + 1) && ocean[x - 1][y + 1].getSquareStatus().equals(SquareStatus.SHIP))
+                || (input.validateCords(x + 1, y - 1) && ocean[x + 1][y - 1].getSquareStatus().equals(SquareStatus.SHIP))
+                || (input.validateCords(x + 1, y + 1) && ocean[x + 1][y + 1].getSquareStatus().equals(SquareStatus.SHIP));
     }
 
 

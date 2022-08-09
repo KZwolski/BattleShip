@@ -21,7 +21,7 @@ public class UserPlayer implements Player{
     private Input input = new Input();
 
     private List<Ship> playerShips = new ArrayList<>();
-
+    @Override
     public List<Ship> getPlayerShips() {
         return playerShips;
     }
@@ -42,7 +42,7 @@ public class UserPlayer implements Player{
     public boolean isAlive(){
         for(int i=0; i<playerShips.size(); i++){
             for(int j = 0; j<playerShips.get(i).getOccupiedCells().size(); j++){
-                if(!playerShips.get(i).getOccupiedCells().get(j).getSquareStatus().toString().equals("SINK")){
+                if(!playerShips.get(i).getOccupiedCells().get(j).getSquareStatus().equals(SquareStatus.SINK)){
                     return true;
                 }
             }
@@ -50,62 +50,67 @@ public class UserPlayer implements Player{
         return false;
     }
 
-    public void handleShot(){
+    @Override
+    public void handleShot(Square[][] enemyBoard, Square[][] playersBoard, Player enemyPlayer,Board board){
         int[] cords = input.getCoordinates();
         while (!input.validateCords(cords[0], cords[1])){
             cords = input.getCoordinates();
         }
-        if(checkSquareStatus(cords[0], cords[1])){
-            handleShot();
+        if(checkSquareStatus(cords[0], cords[1],playersBoard)){
+            handleShot(enemyBoard,playersBoard, enemyPlayer,board);
         }
-        markShot(cords[0], cords[1]);
-        List<Square> squares = shipFields(cords[0], cords[1]);
+        markShot(cords[0], cords[1], enemyBoard, playersBoard);
+        List<Square> squares = shipFields(cords[0], cords[1],enemyPlayer);
         if(isPossibleSink(squares)){
-            sinkShip(squares);
+            sinkShip(squares, board);
         }
     }
 
-    public void markShot(int x, int y){
-        Square[][] ocean = board.getOcean();
-        if(Objects.equals(ocean[x][y].getSquareStatus().toString(), "SHIP")){
-        ocean[x][y].setSquareStatus(SquareStatus.valueOf("HIT"));
+    @Override
+    public void markShot(int x, int y, Square[][] enemyBoard, Square[][] playersBoard){
+        if(enemyBoard[x][y].getSquareStatus().equals(SquareStatus.SHIP)){
+        enemyBoard[x][y].setSquareStatus(SquareStatus.HIT);
+        playersBoard[x][y].setSquareStatus(SquareStatus.HIT);
         } else {
-            ocean[x][y].setSquareStatus(SquareStatus.valueOf("MISSED"));
+            enemyBoard[x][y].setSquareStatus(SquareStatus.MISSED);
+            playersBoard[x][y].setSquareStatus(SquareStatus.MISSED);
         }
     }
 
+    @Override
     public boolean isPossibleSink(List<Square> squares){
-        for(int i =0; i<squares.size(); i++){
-            if(!squares.get(i).getSquareStatus().toString().equals("HIT")){
+        for (Square square : squares) {
+            if (!square.getSquareStatus().equals(SquareStatus.HIT)) {
                 return false;
             }
         }
         return true;
     }
 
-    public void sinkShip(List<Square> squares){
-        for(int i =0; i<squares.size(); i++){
-            squares.get(i).setSquareStatus(SquareStatus.valueOf("SINK"));
+    @Override
+    public void sinkShip(List<Square> squares, Board board){
+        for (Square square : squares) {
+            square.setSquareStatus(SquareStatus.SINK);
+            board.getOcean()[square.getX()][square.getY()].setSquareStatus(SquareStatus.SINK);
         }
     }
-
-    public List<Square> shipFields (int x, int y){
+    @Override
+    public List<Square> shipFields (int x, int y,Player player){
         List<Square> squares = new ArrayList<>();
-        for(int i = 0; i < getPlayerShips().size(); i++){
-            for(int j = 0; j < getPlayerShips().get(i).getOccupiedCells().size(); j++){
-                if(getPlayerShips().get(i).getOccupiedCells().get(j).getX() == x && getPlayerShips().get(i).getOccupiedCells().get(j).getY() == y ){
-                    squares = getPlayerShips().get(i).getOccupiedCells();
+        for(int i = 0; i < player.getPlayerShips().size(); i++){
+            for(int j = 0; j < player.getPlayerShips().get(i).getOccupiedCells().size(); j++){
+                if(player.getPlayerShips().get(i).getOccupiedCells().get(j).getX() == x && player.getPlayerShips().get(i).getOccupiedCells().get(j).getY() == y ){
+                    squares = player.getPlayerShips().get(i).getOccupiedCells();
 
                 }
             }
         }
         return squares;
     }
+    @Override
+    public boolean checkSquareStatus(int x, int y,Square[][] ocean){
 
-    public boolean checkSquareStatus(int x, int y){
-        Square[][] ocean = board.getOcean();
-
-        return Objects.equals(ocean[x][y].getSquareStatus().toString(), "HIT") && Objects.equals(ocean[x][y].getSquareStatus().toString(), "MISSED");
+        return ocean[x][y].getSquareStatus().equals(SquareStatus.HIT) || ocean[x][y].getSquareStatus().equals(SquareStatus.MISSED);
     }
 
 

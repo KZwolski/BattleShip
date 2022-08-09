@@ -1,10 +1,10 @@
 package player;
 
+import board.Square;
 import ship.Ship;
 
-public class HardComputer implements ComputerPlayer{
-    @Override
-    public void addShips(Ship ship) {
+import java.util.List;
 
-    }
+public class HardComputer extends ComputerPlayer{
+
 }

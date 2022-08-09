@@ -39,11 +39,13 @@ public class Display {
                 if (ocean[i][j].getSquareStatus().equals(SquareStatus.EMPTY)){
                     System.out.print(LIGHT_BLUE + WATER + "  ");
                 } else if (ocean[i][j].getSquareStatus().equals(SquareStatus.SHIP)){
-                    System.out.print(SHIP + "  ");
+                    System.out.print(RESET + SHIP + "  ");
                 } else if (ocean[i][j].getSquareStatus().equals(SquareStatus.MISSED)){
                     System.out.print(HIT_MISS + "  ");
                 } else if (ocean[i][j].getSquareStatus().equals(SquareStatus.HIT)){
                     System.out.print(DARK_RED+HIT_SHIP + "  ");
+                } else if (ocean[i][j].getSquareStatus().equals(SquareStatus.SINK)){
+                    System.out.print(BLACK + SHIP_SUNK + "  ");
                 }
             }
             System.out.println(RESET+"|");

@@ -1,9 +1,13 @@
 package board;
 
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
+import player.Player;
+import player.UserPlayer;
+import ship.Ship;
 import ship.ShipType;
 import utilities.Display;
 import utilities.Input;
@@ -13,17 +17,17 @@ public abstract class BoardFactory {
     Input input = new Input();
     Display printer = new Display();
 
-    public void randomPlacement(Board board, ShipType shipType) {
+    public void randomPlacement(Board board, ShipType shipType, Player userPlayer) {
         String[] directions = {"V", "H"};
         String direction = directions[new Random().nextInt(2)];
         int[] cords = drawCoordinates();
         while (checkAreThereShips(shipType.getLength(), direction, board, cords)) {
             cords = drawCoordinates();
         }
-        markSquareAsShip(shipType.getLength(), direction, board, cords);
+        markSquareAsShip(shipType.getLength(), direction, board, cords, userPlayer);
     }
 
-    public void manualPlacement(Board board, ShipType shipType) {
+    public void manualPlacement(Board board, ShipType shipType, Player userPlayer) {
         printer.consolePrint("You are now placing: " + shipType.toString() + " of length: " + shipType.getLength());
         int[] coordinates = input.getCoordinates();
         String direction = input.getDirection();
@@ -32,21 +36,30 @@ public abstract class BoardFactory {
             coordinates = input.getCoordinates();
             direction = input.getDirection();
         }
-        markSquareAsShip(shipType.getLength(), direction, board, coordinates);
+        markSquareAsShip(shipType.getLength(), direction, board, coordinates, userPlayer);
 
     }
 
-    public void markSquareAsShip(int shipSize, String direction, Board board, int[] coordinates) {
+    public void markSquareAsShip(int shipSize, String direction, Board board, int[] coordinates, Player userPlayer) {
         Square[][] ocean = board.getOcean();
+        ArrayList<Square> squares = new ArrayList<>();
         for (int i = 0; i < shipSize; i++) {
             if (Objects.equals(direction, "V")) {
                 ocean[coordinates[0] + i][coordinates[1]].setSquareStatus(SquareStatus.valueOf("SHIP"));
+                squares.add(ocean[coordinates[0] + i][coordinates[1]]);
             } else if (Objects.equals(direction, "H")) {
                 ocean[coordinates[0]][coordinates[1] + i].setSquareStatus(SquareStatus.valueOf("SHIP"));
-
+                squares.add(ocean[coordinates[0]][coordinates[1] + i]);
             }
         }
+        Ship ship = new Ship(squares);
+        userPlayer.addShips(ship);
+        for(int i = 0; i<ship.getOccupiedCells().size(); i++){
+            System.out.println("dupa\n" + ship.getOccupiedCells().get(i).getX()+" "+ship.getOccupiedCells().get(i).getY());
+        }
     }
+
+
 
     public int[] drawCoordinates() {
         int min = 0;

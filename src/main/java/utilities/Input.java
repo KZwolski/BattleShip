@@ -4,7 +4,7 @@ import java.util.Locale;
 import java.util.Scanner;
 
 public class Input {
-
+    Display printer = new Display();
     public static String getUserInput() {
         Scanner scanner = new Scanner(System.in);
         return scanner.nextLine().toUpperCase(Locale.ROOT);

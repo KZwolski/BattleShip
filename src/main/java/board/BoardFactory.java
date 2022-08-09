@@ -46,8 +46,10 @@ public abstract class BoardFactory {
         for (int i = 0; i < shipSize; i++) {
             if (Objects.equals(direction, "V")) {
                 ocean[coordinates[0] + i][coordinates[1]].setSquareStatus(SquareStatus.SHIP);
+                squares.add(ocean[coordinates[0] + i][coordinates[1]]);
             } else if (Objects.equals(direction, "H")) {
                 ocean[coordinates[0]][coordinates[1] + i].setSquareStatus(SquareStatus.SHIP);
+                squares.add(ocean[coordinates[0]][coordinates[1]+i]);
             }
         }
         Ship ship = new Ship(squares);

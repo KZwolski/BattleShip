@@ -11,6 +11,10 @@ public class Display {
         System.out.println("3-Quit");
     }
 
+    public static void displayInvalidValue() {
+        System.out.println("Invalid input try again");
+    }
+
 
     public void printBoard(Square[][] ocean) {
         System.out.println(".| 1 2 3 4 5 6 7 8 9 10");

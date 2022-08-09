@@ -7,8 +7,13 @@ import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
 
 import ship.ShipType;
+import utilities.Display;
+import utilities.Input;
 
 public abstract class BoardFactory {
+
+    Input input = new Input();
+
     public void randomPlacement(Board board, ShipType shipType) {
         String[] directions = {"V", "H"};
         String direction = directions[new Random().nextInt(2)];
@@ -21,12 +26,12 @@ public abstract class BoardFactory {
 
     public void manualPlacement(Board board, ShipType shipType) {
         System.out.println("You are now placing: " + shipType.toString() + " of length: " + shipType.getLength());
-        int[] coordinates = askForCoordinates();
-        String direction = askForDirection();
+        int[] coordinates = getCoordinates();
+        String direction = getDirection();
         while (checkAreThereShips(shipType.getLength(), direction, board, coordinates)) {
             System.out.println("You cannot place ship there :(, try again! ");
-            coordinates = askForCoordinates();
-            direction = askForDirection();
+            coordinates = getCoordinates();
+            direction = getDirection();
         }
         markSquareAsShip(shipType.getLength(), direction, board, coordinates);
 
@@ -100,41 +105,29 @@ public abstract class BoardFactory {
     }
 
 
-    public int[] askForCoordinates() {
-        Scanner scanner = new Scanner(System.in);
+    public int[] getCoordinates() {
         System.out.println("Please enter coordinates: ");
-        String move = scanner.nextLine().toUpperCase(Locale.ROOT);
-        int x = convertInputIntoRow(move);
-        int y = convertInputIntoColumn(move);
+        String move = input.getUserInput();
+        int x = input.convertInputIntoRow(move);
+        int y = input.convertInputIntoColumn(move);
         if (checkIfValidCords(x, y)) {
             return new int[]{x, y};
         } else {
             System.out.println("Wrong coordinates");
-            return askForCoordinates();
+            return getCoordinates();
         }
 
     }
 
-    public int convertInputIntoRow(String input) {
-        int row = input.charAt(0) - 'A';
-        return row;
-    }
-
-    public int convertInputIntoColumn(String input) {
-        int column = Integer.parseInt(input.substring(1)) - 1;
-        return column;
-    }
-
-    public String askForDirection() {
+    public String getDirection() {
         System.out.println("Horizontal(h) or vertical(v)? ");
-        Scanner scanner = new Scanner(System.in);
-        String letter = scanner.nextLine().toUpperCase(Locale.ROOT);
+        String letter = input.getUserInput();
         switch (letter) {
             case "H", "V" -> {
                 return letter;
             }
         }
-        return askForDirection();
+        return getDirection();
     }
 }
 

@@ -1,7 +1,7 @@
 import board.*;
+import ship.ShipType;
 import utilities.Display;
 import utilities.Input;
-import ship.ShipType;
 
 public class Battleship {
     public static void main(String[] args) {
@@ -10,9 +10,10 @@ public class Battleship {
         printer.welcomeMenu();
         Square[][] ocean = board.getOcean();
         printer.printBoard(ocean);
-        Input input = new Input();
-        input.getUserShot();
-
+        for(int i=0; i<5; i++){
+            board.manualPlacement(board, ShipType.values()[i]);
+            printer.printBoard(ocean);
+        }
 
     }
 }

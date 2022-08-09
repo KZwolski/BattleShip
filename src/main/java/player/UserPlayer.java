@@ -17,8 +17,13 @@ public class UserPlayer implements Player{
 
     private List<Ship> playerShips = new ArrayList<>();
 
-    public UserPlayer(){
 
+    public void addShips(Ship ship){
+        this.playerShips.add(ship);
+    }
+    public UserPlayer(String playerName, Board board){
+        this.playerName = playerName;
+        this.board = board;
     }
     public boolean isAlive(){
         return true;

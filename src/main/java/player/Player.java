@@ -8,7 +8,7 @@ public interface Player {
 
 
 
-    public boolean isAlive();
+//    public boolean isAlive();
 
 
 }

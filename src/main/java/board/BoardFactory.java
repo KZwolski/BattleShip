@@ -5,11 +5,13 @@ import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 import ship.ShipType;
+import utilities.Display;
 import utilities.Input;
 
 public abstract class BoardFactory {
 
     Input input = new Input();
+    Display printer = new Display();
 
     public void randomPlacement(Board board, ShipType shipType) {
         String[] directions = {"V", "H"};
@@ -22,7 +24,7 @@ public abstract class BoardFactory {
     }
 
     public void manualPlacement(Board board, ShipType shipType) {
-        System.out.println("You are now placing: " + shipType.toString() + " of length: " + shipType.getLength());
+        printer.consolePrint("You are now placing: " + shipType.toString() + " of length: " + shipType.getLength());
         int[] coordinates = input.getCoordinates();
         String direction = input.getDirection();
         while (checkAreThereShips(shipType.getLength(), direction, board, coordinates)) {

@@ -4,9 +4,11 @@ import java.util.Locale;
 import java.util.Scanner;
 
 public class Input {
+
     public static String getUserInput() {
         Scanner scanner = new Scanner(System.in);
         return scanner.nextLine().toUpperCase(Locale.ROOT);
+
     }
 
     public int convertInputIntoRow(String input) {
@@ -18,21 +20,21 @@ public class Input {
     }
 
     public int[] getCoordinates() {
-        System.out.println("Please enter coordinates: ");
+        printer.consolePrint("Please enter coordinates: ");
         String move = getUserInput();
         int x = convertInputIntoRow(move);
         int y = convertInputIntoColumn(move);
         if (validateCords(x, y)) {
             return new int[]{x, y};
         } else {
-            System.out.println("Wrong coordinates");
+            printer.consolePrint("Wrong coordinates!");
             return getCoordinates();
         }
 
     }
 
     public String getDirection() {
-        System.out.println("Horizontal(h) or vertical(v)? ");
+        printer.consolePrint("Horizontal(h) or vertical(v)? ");
         String letter = getUserInput();
         switch (letter) {
             case "H", "V" -> {

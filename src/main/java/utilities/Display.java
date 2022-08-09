@@ -28,5 +28,9 @@ public class Display {
         }
     }
 
+    public void consolePrint(String message){
+        System.out.println(message);
+    }
+
 
 }

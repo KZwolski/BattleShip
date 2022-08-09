@@ -5,8 +5,10 @@ import board.Square;
 public class Display {
 
     public void welcomeMenu() {
-        System.out.println("Welcome in BattleShip game!");
-        System.out.println("Hit enter to continue!");
+        System.out.println("Main Menu");
+        System.out.println("1-Start game");
+        System.out.println("2-Highest score");
+        System.out.println("3-Quit");
     }
 
 

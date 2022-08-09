@@ -6,29 +6,16 @@ import java.util.Scanner;
 public class Input {
     Scanner sc = new Scanner(System.in);
 
-    public void getUserShot(){
-        String input;
-        do {
-            input = sc.nextLine().toUpperCase(Locale.ROOT);
-        } while (coordinatesInputValidator(input));
+    public String getUserInput() {
+        return sc.nextLine().toUpperCase(Locale.ROOT);
     }
 
+    public int convertInputIntoRow(String input) {
+        return input.charAt(0) - 'A';
+    }
 
-
-    public boolean coordinatesInputValidator(String input){
-        if (input.toCharArray().length > 2){
-            System.out.println("Type only Coordinates (ex. A3)!");
-            return true;
-        }
-
-        try {
-            int intInput = Integer.parseInt(input.split("")[1]);
-        } catch (NumberFormatException e){
-            System.out.println("Wrong input!");
-            return true;
-        }
-
-        return false;
+    public int convertInputIntoColumn(String input) {
+        return Integer.parseInt(input.substring(1)) - 1;
     }
 
 

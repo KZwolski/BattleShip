@@ -4,11 +4,11 @@ import java.util.Locale;
 import java.util.Scanner;
 
 public class Input {
-    Scanner sc = new Scanner(System.in);
-    Display printer = new Display();
 
-    public String getUserInput() {
-        return sc.nextLine().toUpperCase(Locale.ROOT);
+    public static String getUserInput() {
+        Scanner scanner = new Scanner(System.in);
+        return scanner.nextLine().toUpperCase(Locale.ROOT);
+
     }
 
     public int convertInputIntoRow(String input) {

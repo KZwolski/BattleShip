@@ -41,7 +41,7 @@ public class Display {
                 } else if (ocean[i][j].getSquareStatus().equals(SquareStatus.SHIP)){
                     System.out.print(RESET + SHIP + "  ");
                 } else if (ocean[i][j].getSquareStatus().equals(SquareStatus.MISSED)){
-                    System.out.print(HIT_MISS + "  ");
+                    System.out.print(RESET+HIT_MISS + "  ");
                 } else if (ocean[i][j].getSquareStatus().equals(SquareStatus.HIT)){
                     System.out.print(DARK_RED+HIT_SHIP + "  ");
                 } else if (ocean[i][j].getSquareStatus().equals(SquareStatus.SINK)){

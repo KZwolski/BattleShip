@@ -48,4 +48,10 @@ public class Input {
         return x < 10 && x >= 0 && y < 10 && y >= 0;
     }
 
+    public String askForName(){
+        printer.consolePrint("Please enter your name: ");
+        return getUserInput();
+
+    }
+
 }

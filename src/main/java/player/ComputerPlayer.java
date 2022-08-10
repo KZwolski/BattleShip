@@ -36,16 +36,16 @@ public abstract class ComputerPlayer implements Player {
     }
 
     @Override
-    public void handleShot(Square[][] enemyBoard, Square[][] playersBoard,Player player, Board board) {
+    public void handleShot(Board enemyBoard, Board yourGuesses, Player enemyPlayer) {
         int[] cords = drawCoordinates();
         while (!input.validateCords(cords[0], cords[1])) {
             cords = drawCoordinates();
         }
-        if (checkSquareStatus(cords[0], cords[1],playersBoard)) {
-            handleShot(enemyBoard,playersBoard,player,board);
+        if (checkSquareStatus(cords[0], cords[1],yourGuesses.getOcean())) {
+            handleShot(enemyBoard,yourGuesses,enemyPlayer);
         }
-        markShot(cords[0], cords[1],enemyBoard,playersBoard);
-        List<Square> squares = shipFields(cords[0], cords[1],player);
+        markShot(cords[0], cords[1],enemyBoard.getOcean(),board.getOcean());
+        List<Square> squares = shipFields(cords[0], cords[1],enemyPlayer);
         if (isPossibleSink(squares)) {
             sinkShip(squares, board);
         }

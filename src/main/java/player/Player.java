@@ -10,7 +10,7 @@ public interface Player {
 
     void addShips(Ship ship);
 
-    void handleShot(Square[][] enemyBoard, Square[][] playersBoard,Player player, Board board);
+    void handleShot(Board enemyBoard, Board yourGuesses, Player enemyPlayer);
 
     void markShot(int x, int y,Square[][] enemyBoard, Square[][] playersBoard);
 

@@ -4,6 +4,7 @@ import board.Board;
 import board.Square;
 import board.SquareStatus;
 import ship.Ship;
+import ship.ShipType;
 import utilities.Input;
 
 import java.util.*;
@@ -69,8 +70,10 @@ public class UserPlayer implements Player{
         Square[][] ocean = board.getOcean();
         if(Objects.equals(ocean[x][y].getSquareStatus().toString(), "SHIP")){
         ocean[x][y].setSquareStatus(SquareStatus.valueOf("HIT"));
+            score += 5;
         } else {
             ocean[x][y].setSquareStatus(SquareStatus.valueOf("MISSED"));
+            score -= 5;
         }
     }
 
@@ -86,6 +89,7 @@ public class UserPlayer implements Player{
     public void sinkShip(List<Square> squares){
         for(int i =0; i<squares.size(); i++){
             squares.get(i).setSquareStatus(SquareStatus.valueOf("SINK"));
+            score += ShipType.values().length;
         }
     }
 

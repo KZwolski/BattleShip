@@ -8,6 +8,7 @@ import utilities.Input;
 public class Battleship {
 //    public static void main(String[] args) {
 //        Display printer = new Display();
+//        printer.welcomeMenu();
 //        String input = Input.getUserInput();
 //        printer.welcomeMenu();
 //        switch (input) {

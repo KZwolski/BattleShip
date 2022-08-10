@@ -1,4 +1,6 @@
 import board.Board;
+import dataManager.DataManager;
+
 import board.SquareStatus;
 import logic.Game;
 import player.ComputerPlayer;
@@ -13,6 +15,6 @@ public class Battleship {
     public static void main(String[] args) {
         Game game = new Game();
         game.initGame();
-    }
+
 }
 

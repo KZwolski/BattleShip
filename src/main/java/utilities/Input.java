@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 public class Input {
     Display printer = new Display();
+
     public static String getUserInput() {
         Scanner scanner = new Scanner(System.in);
         return scanner.nextLine().toUpperCase(Locale.ROOT);
@@ -20,17 +21,31 @@ public class Input {
     }
 
     public int[] getCoordinates() {
-        printer.consolePrint("Please enter coordinates: ");
-        String move = getUserInput();
-        int x = convertInputIntoRow(move);
-        int y = convertInputIntoColumn(move);
-        if (validateCords(x, y)) {
-            return new int[]{x, y};
-        } else {
-            printer.consolePrint("Wrong coordinates!");
-            return getCoordinates();
+        while (true) {
+            printer.consolePrint("Please enter coordinates: ");
+            String move = getUserInput();
+            if (checkForValidInput(move)) {
+                int x = convertInputIntoRow(move);
+                int y = convertInputIntoColumn(move);
+                if (validateCords(x, y)) {
+                    return new int[]{x, y};
+                } else {
+                    printer.consolePrint("Wrong coordinates!");
+                    return getCoordinates();
+                }
+            }
         }
 
+    }
+
+    public boolean checkForValidInput(String input) {
+        try {
+            int column = convertInputIntoColumn(input);
+            int row = convertInputIntoRow(input);
+            return validateCords(row, column);
+        } catch (NumberFormatException numberFormatException) {
+            return false;
+        }
     }
 
     public String getDirection() {
@@ -48,7 +63,7 @@ public class Input {
         return x < 10 && x >= 0 && y < 10 && y >= 0;
     }
 
-    public String askForName(){
+    public String askForName() {
         printer.consolePrint("Please enter your name: ");
         return getUserInput();
 

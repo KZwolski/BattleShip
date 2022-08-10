@@ -17,19 +17,19 @@ public class Game {
             case "1" -> startNewGame();
             case "2" -> displayHighScores();
             case "3" -> exitGame();
-            default -> Display.displayInvalidValue();
+            default -> initGame();
         }
 
     }
 
     public void startNewGame() {
-        System.out.println("CHOOSE 1,2,3 (2) ");
+        printer.gameTypeMenu();
         String input = Input.getUserInput();
         switch (input) {
             case "1" -> playerVsPlayer();
             case "2" -> playerVsAi();
             case "3" -> exitGame();
-            default -> Display.displayInvalidValue();
+            default -> startNewGame();
         }
     }
 
@@ -64,13 +64,13 @@ public class Game {
 
     }
     public void choseShipPlacement(Board board,Player userPlayer){
-        System.out.println("CHOOSE 1,2,3 (2) ");
+        printer.shipPlacementMenu();
         String input = Input.getUserInput();
         switch (input) {
             case "1" -> placeShipsManually(board,userPlayer);
             case "2" -> placeShipsRandomly(board,userPlayer);
             case "3" -> exitGame();
-            default -> Display.displayInvalidValue();
+            default -> choseShipPlacement(board,userPlayer);
         }
     }
 
@@ -87,12 +87,12 @@ public class Game {
     }
 
     public void playerVsAi() {
-        printer.consolePrint("Choose(1)");
+        printer.computerDifficultyMenu();
         String input = Input.getUserInput();
         switch (input) {
             case "1", "2", "3" -> playerVsComputer(Integer.parseInt(input));
             case "4" -> exitGame();
-            default -> Display.displayInvalidValue();
+            default -> playerVsAi();
         }
 
     }
@@ -104,7 +104,7 @@ public class Game {
         UserPlayer user1 = new UserPlayer(player1Name, player1Board);
         Player user2;
         switch (level) {
-            case 2 -> user2 = new MediumComputer();
+            case 2 -> user2 = new MediumComputer(player2Board);
             case 3 -> user2 = new HardComputer();
             default -> user2 = new EasyComputer(player2Board);
         }
@@ -128,7 +128,8 @@ public class Game {
     public static void displayHighScores() {
     }
 
-    public static void exitGame() {
-        System.out.println("Ok, Bye!");
+    public void exitGame() {
+        printer.consolePrint(("Ok, Bye!"));
+        System.exit(0);
     }
 }

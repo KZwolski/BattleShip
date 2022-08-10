@@ -20,6 +20,10 @@ public class UserPlayer implements Player{
 
     private Input input = new Input();
 
+    public int getScore() {
+        return score;
+    }
+
     private List<Ship> playerShips = new ArrayList<>();
     @Override
     public List<Ship> getPlayerShips() {
@@ -39,7 +43,7 @@ public class UserPlayer implements Player{
         this.isAlive = true;
         this.score = 0;
     }
-    public boolean isAlive(){
+    public boolean isStillAlive(){
         for(int i=0; i<playerShips.size(); i++){
             for(int j = 0; j<playerShips.get(i).getOccupiedCells().size(); j++){
                 if(!playerShips.get(i).getOccupiedCells().get(j).getSquareStatus().equals(SquareStatus.SINK)){
@@ -50,19 +54,23 @@ public class UserPlayer implements Player{
         return false;
     }
 
+    public String getPlayerName() {
+        return playerName;
+    }
+
     @Override
-    public void handleShot(Square[][] enemyBoard, Square[][] playersBoard, Player enemyPlayer,Board board){
+    public void handleShot(Board enemyBoard, Board yourGuesses, Player enemyPlayer){
         int[] cords = input.getCoordinates();
         while (!input.validateCords(cords[0], cords[1])){
             cords = input.getCoordinates();
         }
-        if(checkSquareStatus(cords[0], cords[1],playersBoard)){
-            handleShot(enemyBoard,playersBoard, enemyPlayer,board);
+        if(checkSquareStatus(cords[0], cords[1],yourGuesses.getOcean())){
+            handleShot(enemyBoard,yourGuesses, enemyPlayer);
         }
-        markShot(cords[0], cords[1], enemyBoard, playersBoard);
+        markShot(cords[0], cords[1], enemyBoard.getOcean(), yourGuesses.getOcean());
         List<Square> squares = shipFields(cords[0], cords[1],enemyPlayer);
         if(isPossibleSink(squares)){
-            sinkShip(squares, board);
+            sinkShip(squares, yourGuesses);
         }
     }
 

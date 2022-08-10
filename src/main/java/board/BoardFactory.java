@@ -49,16 +49,12 @@ public abstract class BoardFactory {
                 squares.add(ocean[coordinates[0] + i][coordinates[1]]);
             } else if (Objects.equals(direction, "H")) {
                 ocean[coordinates[0]][coordinates[1] + i].setSquareStatus(SquareStatus.SHIP);
-                squares.add(ocean[coordinates[0]][coordinates[1]+i]);
+                squares.add(ocean[coordinates[0]][coordinates[1] + i]);
             }
         }
         Ship ship = new Ship(squares);
         userPlayer.addShips(ship);
-        for(int i = 0; i<ship.getOccupiedCells().size(); i++){
-            System.out.println("dupa\n" + ship.getOccupiedCells().get(i).getX()+" "+ship.getOccupiedCells().get(i).getY());
-        }
     }
-
 
 
     public int[] drawCoordinates() {
@@ -90,7 +86,13 @@ public abstract class BoardFactory {
     }
 
     public boolean checkEveryDirectionNeighbours(Board board, int x, int y) {
-        return checkEdgeNeighbours(board, x, y) || checkHorizontalNeighbours(board, x, y) || checkVerticalNeighbours(board, x, y);
+        return checkBoxItSelf(board, x, y) || checkEdgeNeighbours(board, x, y) || checkHorizontalNeighbours(board, x, y)
+                || checkVerticalNeighbours(board, x, y);
+    }
+
+    public boolean checkBoxItSelf(Board board, int x, int y) {
+        Square[][] ocean = board.getOcean();
+        return (input.validateCords(x, y) && ocean[x][y].getSquareStatus().equals(SquareStatus.SHIP));
     }
 
     public boolean checkVerticalNeighbours(Board board, int x, int y) {

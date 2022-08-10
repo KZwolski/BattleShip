@@ -75,7 +75,7 @@ public class Game {
     }
 
     private void placeShipsRandomly(Board board, Player userPLayer) {
-        for(int i=0; i<2;i++){
+        for(int i=0; i<ShipType.values().length;i++){
             board.randomPlacement(board,ShipType.values()[i],userPLayer);
         }
     }
@@ -87,8 +87,8 @@ public class Game {
     }
 
     public void playerVsAi() {
-        String input = Input.getUserInput();
         printer.consolePrint("Choose(1)");
+        String input = Input.getUserInput();
         switch (input) {
             case "1", "2", "3" -> playerVsComputer(Integer.parseInt(input));
             case "4" -> exitGame();
@@ -102,7 +102,7 @@ public class Game {
         Board player2Board = new Board();
         String player1Name = input.askForName();
         UserPlayer user1 = new UserPlayer(player1Name, player1Board);
-        ComputerPlayer user2;
+        Player user2;
         switch (level) {
             case 2 -> user2 = new MediumComputer();
             case 3 -> user2 = new HardComputer();
@@ -115,23 +115,14 @@ public class Game {
         while(user1.isStillAlive() && user2.isStillAlive()){
             playerShooting(player2Board,player1Board, player1Guess,user1,user2);
             computerShooting(player1Board, player2Guess, user2, user1);
+            printer.printBoard(player2Board.getOcean());
 
         }
     }
 
-    public void computerShooting(Board enemyBoard, Board userGuess, ComputerPlayer player, Player enemyPLayer){
+    public void computerShooting(Board enemyBoard, Board userGuess, Player player, Player enemyPLayer){
         printer.consolePrint(player.getPlayerName()+"'s " + "Shooting phase now");
         player.handleShot(enemyBoard,userGuess,enemyPLayer);
-    }
-
-
-    private void playerVsHardComputer() {
-    }
-
-    private void playerVsMediumComputer() {
-    }
-
-    private void playerVsEasyComputer() {
     }
 
     public static void displayHighScores() {

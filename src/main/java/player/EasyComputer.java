@@ -14,4 +14,7 @@ public class EasyComputer extends ComputerPlayer{
         this.score=0;
     }
 
+
+
+
 }

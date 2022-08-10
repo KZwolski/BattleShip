@@ -102,4 +102,21 @@ public abstract class ComputerPlayer implements Player {
         return ocean[x][y].getSquareStatus().equals(SquareStatus.HIT) && ocean[x][y].getSquareStatus().equals(SquareStatus.MISSED);
     }
 
+
+    public String getPlayerName() {
+        return playerName;
+    }
+
+    public boolean isStillAlive(){
+        for(int i=0; i<computerShips.size(); i++){
+            for(int j = 0; j<computerShips.get(i).getOccupiedCells().size(); j++){
+                if(!computerShips.get(i).getOccupiedCells().get(j).getSquareStatus().equals(SquareStatus.SINK)){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+
 }

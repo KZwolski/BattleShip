@@ -16,5 +16,6 @@ public class Battleship {
         Game game = new Game();
         game.initGame();
 
+    }
 }
 

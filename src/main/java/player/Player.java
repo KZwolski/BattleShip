@@ -71,7 +71,7 @@ public abstract class Player {
             enemyBoard[x][y].setSquareStatus(SquareStatus.HIT);
             playersBoard[x][y].setSquareStatus(SquareStatus.HIT);
             score += 5;
-        } else {
+        } else if(enemyBoard[x][y].getSquareStatus().equals(SquareStatus.EMPTY)){
             enemyBoard[x][y].setSquareStatus(SquareStatus.MISSED);
             playersBoard[x][y].setSquareStatus(SquareStatus.MISSED);
             score -= 5;

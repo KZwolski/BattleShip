@@ -16,6 +16,8 @@ public class Display {
     private final String HIT_MISS = "\uD83C\uDFAF";
     private final String HIT_SHIP = "\uD83D\uDE80";
 
+    private final String CLEAR_SCREEN = "\033[H\033[2J";
+
 
 
 
@@ -25,7 +27,25 @@ public class Display {
         System.out.println("2-Highest score");
         System.out.println("3-Quit");
     }
-
+    public void gameTypeMenu() {
+        System.out.println("GameType Menu");
+        System.out.println("1-Player vs Player");
+        System.out.println("2-Player vs Computer");
+        System.out.println("3-Quit");
+    }
+    public void shipPlacementMenu() {
+        System.out.println("ShipPlacement menu");
+        System.out.println("1-Manual Placement");
+        System.out.println("2-Random Placement");
+        System.out.println("3-Quit");
+    }
+    public void computerDifficultyMenu() {
+        System.out.println("computerDifficultyMenu");
+        System.out.println("1-Easy Level");
+        System.out.println("2-Medium Level");
+        System.out.println("3-Hard Level");
+        System.out.println("4-Quit");
+    }
     public static void displayInvalidValue() {
         System.out.println("Invalid input try again");
     }

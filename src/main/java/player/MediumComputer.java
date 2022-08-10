@@ -3,10 +3,8 @@ package player;
 import board.Board;
 import board.Square;
 import board.SquareStatus;
-import ship.Ship;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ThreadLocalRandom;
@@ -16,15 +14,37 @@ public class MediumComputer extends Player {
 
     private int[] lastShotCords;
 
-    public int[] getLastShotCords() {
-        return lastShotCords;
+    private SquareStatus lastShotStatus;
+
+    private String Direction;
+
+    private int shiftValue;
+
+    private int hitInARow;
+
+    public int getShiftValue() {
+        return shiftValue;
     }
+
+    public void setShiftValue(int shiftValue) {
+        this.shiftValue = shiftValue;
+    }
+
+    public String getDirection() {
+        return Direction;
+    }
+
+    public void setDirection(String direction) {
+        Direction = direction;
+    }
+
 
     public MediumComputer(Board board) {
         this.playerName = "Computer";
         this.board = board;
         this.isAlive = true;
         this.score = 0;
+        this.shiftValue = 1;
     }
 
     @Override
@@ -43,11 +63,6 @@ public class MediumComputer extends Player {
 
     }
 
-    public int drawShiftValue() {
-        int[] values = {1, -1};
-        return values[ThreadLocalRandom.current().nextInt(0, values.length + 1)];
-
-    }
 
     public String drawDirection() {
         String[] values = {"V", "H"};
@@ -55,48 +70,115 @@ public class MediumComputer extends Player {
 
     }
 
-    public int[] shotAroundShip() {
-        int[] coordinates = new int[2];
-        int shiftValue = drawShiftValue();
-        String direction = drawDirection();
-        if (Objects.equals(direction, "V")) {
-            coordinates[0] = lastShotCords[0] + shiftValue;
-            coordinates[1] = lastShotCords[1];
-        } else if (Objects.equals(direction, "H")) {
-            coordinates[0] = lastShotCords[0];
-            coordinates[1] = lastShotCords[1] + shiftValue;
-
-        }
-        return coordinates;
-    }
-    public boolean checkIfCordsExcluded(int [] coords){
-        for(int i=0; i<excludedFields.size(); i++){
-            if(excludedFields.get(i)[0] == coords[0] && excludedFields.get(i)[1] == coords[1]){
-                return true;
+    public boolean checkIfCordsExcluded(int x, int y) {
+        for (int i = 0; i < excludedFields.size(); i++) {
+            if (excludedFields.get(i)[0] == x && excludedFields.get(i)[1] == y) {
+                return false;
             }
-        }return false;
+        }
+        return true;
+    }
+
+
+    public List<int[]> possibleMoves(Board enemyBoard, String direction, int shiftValue) {
+        List<int[]> possibleMoves = new ArrayList<>();
+        if (Objects.equals(direction, "V")) {
+            if (shiftValue == 1) {
+                if (input.validateCords(lastShotCords[0] + hitInARow, lastShotCords[1]) && checkIfCordsExcluded(lastShotCords[0] + hitInARow, lastShotCords[1])) {
+                    possibleMoves.add(new int[]{lastShotCords[0] + hitInARow, lastShotCords[1]});
+                }
+            } else if (shiftValue == -1) {
+                if (input.validateCords(lastShotCords[0] - hitInARow, lastShotCords[1]) && checkIfCordsExcluded(lastShotCords[0] - hitInARow, lastShotCords[1])) {
+                    possibleMoves.add(new int[]{lastShotCords[0] - hitInARow, lastShotCords[1]});
+                }
+            }
+        } else if (Objects.equals(direction, "H")) {
+            if (shiftValue == 1) {
+                if (input.validateCords(lastShotCords[0], lastShotCords[1] + hitInARow) && checkIfCordsExcluded(lastShotCords[0], lastShotCords[1] + hitInARow)) {
+                    possibleMoves.add(new int[]{lastShotCords[0], lastShotCords[1] + hitInARow});
+                }
+            } else if (shiftValue == -1) {
+                if (input.validateCords(lastShotCords[0], lastShotCords[1] - hitInARow) && checkIfCordsExcluded(lastShotCords[0], lastShotCords[1] - hitInARow)) {
+                    possibleMoves.add(new int[]{lastShotCords[0], lastShotCords[1] - hitInARow});
+                }
+            }
+        }
+
+        return possibleMoves;
+    }
+
+    public void swapDirection() {
+        if (Objects.equals(getDirection(), "H")) {
+            setDirection("V");
+        } else if (Objects.equals(getDirection(), "V")) {
+            setDirection("H");
+        }
+    }
+
+    public void swapShiftNumber() {
+        if (Objects.equals(getShiftValue(), 1)) {
+            setShiftValue(-1);
+        } else if (Objects.equals(getShiftValue(), -1)) {
+            setShiftValue(1);
+        }
+    }
+
+    public int[] drawFromPossibleMoves(List<int[]> possibleMoves) {
+        int randomNUmber = ThreadLocalRandom.current().nextInt(0, possibleMoves.size());
+        return new int[]{possibleMoves.get(randomNUmber)[0], possibleMoves.get(randomNUmber)[1]};
+
     }
 
     @Override
     public void handleShot(Board enemyBoard, Board yourGuesses, Player enemyPlayer) {
         int[] cords;
-        if (getLastShotCords() == null) {
+        if (hitInARow > 0) {
+            if (getDirection() == null) {
+                setDirection(drawDirection());
+            }
+            List<int[]> possibleMoves = possibleMoves(enemyBoard, getDirection(), getShiftValue());
+            if (possibleMoves.isEmpty()) {
+                swapShiftNumber();
+                possibleMoves = possibleMoves(enemyBoard, getDirection(), getShiftValue());
+                if (possibleMoves.isEmpty()) {
+                    swapDirection();
+                    possibleMoves = possibleMoves(enemyBoard, getDirection(), getShiftValue());
+                }
+
+            }
+            cords = drawFromPossibleMoves(possibleMoves);
+            if (enemyBoard.getOcean()[cords[0]][cords[1]].getSquareStatus().equals(SquareStatus.SHIP)) {
+                excludedFields.add(cords);
+                hitInARow += 1;
+                lastShotStatus = SquareStatus.HIT;
+            } else if (enemyBoard.getOcean()[cords[0]][cords[1]].getSquareStatus().equals(SquareStatus.EMPTY)) {
+                excludedFields.add(cords);
+                hitInARow = 1;
+                lastShotStatus = SquareStatus.MISSED;
+            }
+        } else {
             cords = getValidShotCords();
-        }else {
-            cords = shotAroundShip();
+            if (enemyBoard.getOcean()[cords[0]][cords[1]].getSquareStatus().equals(SquareStatus.SHIP)) {
+                excludedFields.add(cords);
+                lastShotStatus = SquareStatus.HIT;
+                lastShotCords = cords;
+                hitInARow += 1;
+            } else if (enemyBoard.getOcean()[cords[0]][cords[1]].getSquareStatus().equals(SquareStatus.EMPTY)) {
+                excludedFields.add(cords);
+                lastShotStatus = SquareStatus.MISSED;
+            }
+
         }
-        if (checkSquareStatus(cords[0], cords[1], yourGuesses.getOcean()) && checkIfCordsExcluded(cords)) {
+        if (checkSquareStatus(cords[0], cords[1], yourGuesses.getOcean())) {
             handleShot(enemyBoard, yourGuesses, enemyPlayer);
         }
         markShot(cords[0], cords[1], enemyBoard.getOcean(), yourGuesses.getOcean());
-        if (enemyBoard.getOcean()[cords[0]][cords[1]].getSquareStatus().equals(SquareStatus.HIT)) {
-            lastShotCords = cords;
-        }else if(enemyBoard.getOcean()[cords[0]][cords[1]].getSquareStatus().equals(SquareStatus.MISSED)){
-            excludedFields.add(cords);
-        }
         List<Square> squares = shipFields(cords[0], cords[1], enemyPlayer);
-        if (isPossibleSink(squares)) {
+        if (!squares.isEmpty() && isPossibleSink(squares)) {
             sinkShip(squares, yourGuesses);
+            hitInARow = 0;
+            lastShotStatus = SquareStatus.MISSED;
+
         }
     }
 }

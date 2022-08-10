@@ -1,8 +1,7 @@
 package logic;
 
 import board.Board;
-import player.Player;
-import player.UserPlayer;
+import player.*;
 import ship.ShipType;
 import utilities.Display;
 import utilities.Input;
@@ -24,7 +23,7 @@ public class Game {
     }
 
     public void startNewGame() {
-        System.out.println("CHOOSE 1,2,3 (1) ");
+        System.out.println("CHOOSE 1,2,3 (2) ");
         String input = Input.getUserInput();
         switch (input) {
             case "1" -> playerVsPlayer();
@@ -88,25 +87,42 @@ public class Game {
     }
 
     public void playerVsAi() {
+        printer.consolePrint("Choose(1)");
         String input = Input.getUserInput();
-        printer.welcomeMenu();
         switch (input) {
-            case "1" -> playerVsEasyComputer();
-            case "2" -> playerVsMediumComputer();
-            case "3" -> playerVsHardComputer();
+            case "1", "2", "3" -> playerVsComputer(Integer.parseInt(input));
             case "4" -> exitGame();
             default -> Display.displayInvalidValue();
         }
 
     }
 
-    private void playerVsHardComputer() {
+    private void playerVsComputer(int level){
+        Board player1Board = new Board();
+        Board player2Board = new Board();
+        String player1Name = input.askForName();
+        UserPlayer user1 = new UserPlayer(player1Name, player1Board);
+        Player user2;
+        switch (level) {
+            case 2 -> user2 = new MediumComputer();
+            case 3 -> user2 = new HardComputer();
+            default -> user2 = new EasyComputer(player2Board);
+        }
+        choseShipPlacement(player1Board,user1);
+        placeShipsRandomly(player2Board, user2);
+        Board player1Guess = new Board();
+        Board player2Guess = new Board();
+        while(user1.isStillAlive() && user2.isStillAlive()){
+            playerShooting(player2Board,player1Board, player1Guess,user1,user2);
+            computerShooting(player1Board, player2Guess, user2, user1);
+            printer.printBoard(player2Board.getOcean());
+
+        }
     }
 
-    private void playerVsMediumComputer() {
-    }
-
-    private void playerVsEasyComputer() {
+    public void computerShooting(Board enemyBoard, Board userGuess, Player player, Player enemyPLayer){
+        printer.consolePrint(player.getPlayerName()+"'s " + "Shooting phase now");
+        player.handleShot(enemyBoard,userGuess,enemyPLayer);
     }
 
     public static void displayHighScores() {

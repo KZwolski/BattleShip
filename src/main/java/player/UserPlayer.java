@@ -4,6 +4,7 @@ import board.Board;
 import board.Square;
 import board.SquareStatus;
 import ship.Ship;
+import ship.ShipType;
 import utilities.Input;
 
 import java.util.*;
@@ -66,14 +67,18 @@ public class UserPlayer implements Player{
         }
     }
 
+
     @Override
     public void markShot(int x, int y, Square[][] enemyBoard, Square[][] playersBoard){
         if(enemyBoard[x][y].getSquareStatus().equals(SquareStatus.SHIP)){
         enemyBoard[x][y].setSquareStatus(SquareStatus.HIT);
         playersBoard[x][y].setSquareStatus(SquareStatus.HIT);
+        score += 5;
         } else {
             enemyBoard[x][y].setSquareStatus(SquareStatus.MISSED);
             playersBoard[x][y].setSquareStatus(SquareStatus.MISSED);
+            score -= 5;
+
         }
     }
 
@@ -87,11 +92,14 @@ public class UserPlayer implements Player{
         return true;
     }
 
+
     @Override
     public void sinkShip(List<Square> squares, Board board){
         for (Square square : squares) {
             square.setSquareStatus(SquareStatus.SINK);
             board.getOcean()[square.getX()][square.getY()].setSquareStatus(SquareStatus.SINK);
+            score += ShipType.values().length;
+
         }
     }
     @Override

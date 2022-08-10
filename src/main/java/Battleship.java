@@ -1,4 +1,6 @@
 import board.Board;
+import dataManager.DataManager;
+
 import board.SquareStatus;
 import player.ComputerPlayer;
 import player.EasyComputer;
@@ -11,8 +13,8 @@ import utilities.Input;
 public class Battleship {
 //    public static void main(String[] args) {
 //        Display printer = new Display();
-//        String input = Input.getUserInput();
 //        printer.welcomeMenu();
+//        String input = Input.getUserInput();
 //        switch (input) {
 //            case "1" -> startNewGame();
 //            case "2" -> displayHighScores();
@@ -23,8 +25,9 @@ public class Battleship {
 //    public static void startNewGame() {
 //    }
 //
-//    public static void displayHighScores() {
-//    }
+ //   public static void displayHighScores() {
+ //   DataManager.bestScoreRead();
+ //   }
 //
 //    public static void exitGame() {
 //        System.out.println("Ok, Bye!");

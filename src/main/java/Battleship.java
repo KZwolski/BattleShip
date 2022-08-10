@@ -11,7 +11,6 @@ public class Battleship {
 //        Display printer = new Display();
 //        printer.welcomeMenu();
 //        String input = Input.getUserInput();
-//        printer.welcomeMenu();
 //        switch (input) {
 //            case "1" -> startNewGame();
 //            case "2" -> displayHighScores();

@@ -87,7 +87,7 @@ public class Game {
     }
 
     public void playerVsAi() {
-        printer.consolePrint("Choose(1)");
+        printer.consolePrint("Choose(2)");
         String input = Input.getUserInput();
         switch (input) {
             case "1", "2", "3" -> playerVsComputer(Integer.parseInt(input));
@@ -104,7 +104,7 @@ public class Game {
         UserPlayer user1 = new UserPlayer(player1Name, player1Board);
         Player user2;
         switch (level) {
-            case 2 -> user2 = new MediumComputer();
+            case 2 -> user2 = new MediumComputer(player2Board);
             case 3 -> user2 = new HardComputer();
             default -> user2 = new EasyComputer(player2Board);
         }

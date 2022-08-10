@@ -1,4 +1,5 @@
 import board.Board;
+import dataManager.DataManager;
 import player.Player;
 import player.UserPlayer;
 import ship.ShipType;
@@ -21,8 +22,9 @@ public class Battleship {
 //    public static void startNewGame() {
 //    }
 //
-//    public static void displayHighScores() {
-//    }
+ //   public static void displayHighScores() {
+ //   DataManager.bestScoreRead();
+ //   }
 //
 //    public static void exitGame() {
 //        System.out.println("Ok, Bye!");

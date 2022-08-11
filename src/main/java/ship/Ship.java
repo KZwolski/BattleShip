@@ -2,21 +2,17 @@ package ship;
 
 import board.Square;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Ship {
-    private List<Square> occupiedCells = new ArrayList<Square>();
+    private List<Square> occupiedCells;
 
-    public void occupySquare(Square square) {
-        occupiedCells.add(square);
-    }
 
     public List<Square> getOccupiedCells() {
         return occupiedCells;
     }
 
-    public Ship(List<Square> squares){
+    public Ship(List<Square> squares) {
         this.occupiedCells = squares;
     }
 

@@ -122,7 +122,7 @@ public class Game {
         Player user2;
         switch (level) {
             case 2 -> user2 = new MediumComputer(player2Board);
-            case 3 -> user2 = new HardComputer();
+            case 3 -> user2 = new HardComputer(player2Board);
             default -> user2 = new EasyComputer(player2Board);
         }
         choseShipPlacement(player1Board,user1);

@@ -120,7 +120,7 @@ public abstract class Player {
         return ocean[x][y].getSquareStatus().equals(SquareStatus.HIT) || ocean[x][y].getSquareStatus().equals(SquareStatus.MISSED);
     }
 
-    ;
+
 
 
 }

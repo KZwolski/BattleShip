@@ -9,10 +9,16 @@ import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
 
-
+/**
+ * CLass responsible for handling file saving and reading
+ */
 public class DataManager {
 
-
+    /**
+     * Method used for writing winner score to the file
+     *
+     * @param winnerScore score of the winner
+     */
     public static void writeToFile(String winnerScore) {
         try {
             FileWriter fileWriter = new FileWriter("stats.txt", true);
@@ -23,6 +29,9 @@ public class DataManager {
         }
     };
 
+    /**
+     * Method responsible for reading best scores from the file
+     */
     public static void bestScoreRead() {
         List<String> lines = Collections.emptyList();
         List<Integer> scores = new ArrayList<>();

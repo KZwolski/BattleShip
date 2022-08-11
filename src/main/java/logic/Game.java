@@ -30,11 +30,12 @@ public class Game {
         }
     }
     public void saveScore(Player player){
-        DataManager.writeToFile(String.valueOf(player.getScore()));
+        DataManager dataManager = new DataManager();
+        dataManager.writeToFile(String.valueOf(player.getScore()),String.valueOf(player.getPlayerName()));
     }
 
     public void displayWinner(Player player){
-        printer.consolePrint("Congrats "+player.getPlayerName() + " won the game!");
+        printer.consolePrint("Congrats "+player.getPlayerName() + " won the game witch "+player.getScore()+" points!");
     }
     public void startNewGame() {
         printer.gameTypeMenu();
@@ -65,7 +66,7 @@ public class Game {
         }
         Player winner = determineWinner(user1,user2);
         displayWinner(winner);
-        displayWinner(winner);
+        saveScore(winner);
     }
     public void playerShooting(Board enemyBoard,Board userShips, Board userGuess, UserPlayer player, Player enemyPLayer){
         printer.consolePrint(player.getPlayerName()+"'s " + "Shooting phase now");
@@ -146,7 +147,8 @@ public class Game {
     }
 
     public static void displayHighScores() {
-        DataManager.bestScoreRead();
+        DataManager readData = new DataManager();
+        readData.bestScoreRead();
     }
 
     public void exitGame() {

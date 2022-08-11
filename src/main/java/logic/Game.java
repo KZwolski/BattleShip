@@ -59,7 +59,8 @@ public class Game {
      * @param player Instance of player that won
      */
     public void saveScore(Player player){
-        DataManager.writeToFile(String.valueOf(player.getScore()));
+        DataManager dataManager = new DataManager();
+        dataManager.writeToFile(String.valueOf(player.getScore()),String.valueOf(player.getPlayerName()));
     }
 
     /**
@@ -68,7 +69,7 @@ public class Game {
      * @param player Instance of player that won
      */
     public void displayWinner(Player player){
-        printer.consolePrint("Congrats "+player.getPlayerName() + " won the game!");
+        printer.consolePrint("Congrats "+player.getPlayerName() + " won the game witch "+player.getScore()+" points!");
     }
 
     /**
@@ -106,7 +107,7 @@ public class Game {
         }
         Player winner = determineWinner(user1,user2);
         displayWinner(winner);
-        displayWinner(winner);
+        saveScore(winner);
     }
 
     /**
@@ -231,7 +232,8 @@ public class Game {
      * Method used for displaying high scores
      */
     public static void displayHighScores() {
-        DataManager.bestScoreRead();
+        DataManager readData = new DataManager();
+        readData.bestScoreRead();
     }
 
     /**

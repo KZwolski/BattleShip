@@ -141,7 +141,7 @@ public abstract class Player {
         } else if (enemyBoard[x][y].getSquareStatus().equals(SquareStatus.EMPTY)) {
             enemyBoard[x][y].setSquareStatus(SquareStatus.MISSED);
             playersBoard[x][y].setSquareStatus(SquareStatus.MISSED);
-            score -= 5;
+            score -= 1;
 
         }
     }

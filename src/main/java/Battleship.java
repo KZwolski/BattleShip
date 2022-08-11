@@ -1,7 +1,4 @@
-import board.Board;
 import logic.Game;
-import player.MediumComputer;
-import player.Player;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -167,7 +167,7 @@ public class MediumComputer extends Player {
 
     @Override
     public void handleShot(Board enemyBoard, Board yourGuesses, Player enemyPlayer) {
-        int[] cords;
+        int[] cords = new int[2];
         if (hitInARow > 0) {
             if (getDirection() == null) {
                 setDirection(drawDirection());
@@ -182,7 +182,11 @@ public class MediumComputer extends Player {
                 }
 
             }
-            cords = drawFromPossibleMoves(possibleMoves);
+            try {
+                cords = drawFromPossibleMoves(possibleMoves);
+            }catch (Exception e){
+                handleShot(enemyBoard,yourGuesses,enemyPlayer);
+            }
             if (enemyBoard.getOcean()[cords[0]][cords[1]].getSquareStatus().equals(SquareStatus.SHIP)) {
                 setClassFieldsAfterMultiHit(cords);
             } else if (enemyBoard.getOcean()[cords[0]][cords[1]].getSquareStatus().equals(SquareStatus.EMPTY)) {

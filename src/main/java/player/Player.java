@@ -9,6 +9,7 @@ import utilities.Input;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class Player {
     protected String playerName;
@@ -119,7 +120,51 @@ public abstract class Player {
     public boolean checkSquareStatus(int x, int y, Square[][] ocean) {
         return ocean[x][y].getSquareStatus().equals(SquareStatus.HIT) || ocean[x][y].getSquareStatus().equals(SquareStatus.MISSED);
     }
+    public void excludeSquaresAroundShip(List<Square> squares,List<int[]> excludedFields) {
+        excludeHorizontalAndVerticalAroundShip(squares,excludedFields);
+        excludeDiagonalAroundShip(squares,excludedFields);
 
+    }
+
+    public void excludeHorizontalAndVerticalAroundShip(List<Square> squares, List<int[]> excludedFields) {
+        for (int i = 0; i < squares.size(); i++) {
+            if (input.validateCords(squares.get(i).getX() + 1, squares.get(i).getY())) {
+                excludedFields.add(new int[]{squares.get(i).getX() + 1, squares.get(i).getY()});
+            }
+            if (input.validateCords(squares.get(i).getX() - 1, squares.get(i).getY())) {
+                excludedFields.add(new int[]{squares.get(i).getX() - 1, squares.get(i).getY()});
+            }
+            if (input.validateCords(squares.get(i).getX(), squares.get(i).getY() + 1)) {
+                excludedFields.add(new int[]{squares.get(i).getX(), squares.get(i).getY() + 1});
+            }
+            if (input.validateCords(squares.get(i).getX(), squares.get(i).getY() - 1)) {
+                excludedFields.add(new int[]{squares.get(i).getX(), squares.get(i).getY() - 1});
+            }
+        }
+    }
+
+    public void excludeDiagonalAroundShip(List<Square> squares,List<int[]> excludedFields) {
+        for (int i = 0; i < squares.size(); i++) {
+            if (input.validateCords(squares.get(i).getX() + 1, squares.get(i).getY() + 1)) {
+                excludedFields.add(new int[]{squares.get(i).getX() + 1, squares.get(i).getY() + 1});
+            }
+            if (input.validateCords(squares.get(i).getX() - 1, squares.get(i).getY() + 1)) {
+                excludedFields.add(new int[]{squares.get(i).getX() - 1, squares.get(i).getY() + 1});
+            }
+            if (input.validateCords(squares.get(i).getX() + 1, squares.get(i).getY() - 1)) {
+                excludedFields.add(new int[]{squares.get(i).getX() + 1, squares.get(i).getY() - 1});
+            }
+            if (input.validateCords(squares.get(i).getX() - 1, squares.get(i).getY() - 1)) {
+                excludedFields.add(new int[]{squares.get(i).getX() - 1, squares.get(i).getY() - 1});
+            }
+        }
+    }
+
+    public int[] drawFromPossibleMoves(List<int[]> possibleMoves) {
+        int randomNUmber = ThreadLocalRandom.current().nextInt(0, possibleMoves.size());
+        return new int[]{possibleMoves.get(randomNUmber)[0], possibleMoves.get(randomNUmber)[1]};
+
+    }
 
 
 

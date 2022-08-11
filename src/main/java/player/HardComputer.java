@@ -154,51 +154,6 @@ public class HardComputer extends Player {
         }
     }
 
-    public int[] drawFromPossibleMoves(List<int[]> possibleMoves) {
-        int randomNUmber = ThreadLocalRandom.current().nextInt(0, possibleMoves.size());
-        return new int[]{possibleMoves.get(randomNUmber)[0], possibleMoves.get(randomNUmber)[1]};
-
-    }
-
-    public void excludeSquaresAroundShip(List<Square> squares) {
-        excludeHorizontalAndVerticalAroundShip(squares);
-        excludeDiagonalAroundShip(squares);
-
-    }
-
-    public void excludeHorizontalAndVerticalAroundShip(List<Square> squares) {
-        for (int i = 0; i < squares.size(); i++) {
-            if (input.validateCords(squares.get(i).getX() + 1, squares.get(i).getY())) {
-                excludedFields.add(new int[]{squares.get(i).getX() + 1, squares.get(i).getY()});
-            }
-            if (input.validateCords(squares.get(i).getX() - 1, squares.get(i).getY())) {
-                excludedFields.add(new int[]{squares.get(i).getX() - 1, squares.get(i).getY()});
-            }
-            if (input.validateCords(squares.get(i).getX(), squares.get(i).getY() + 1)) {
-                excludedFields.add(new int[]{squares.get(i).getX(), squares.get(i).getY() + 1});
-            }
-            if (input.validateCords(squares.get(i).getX(), squares.get(i).getY() - 1)) {
-                excludedFields.add(new int[]{squares.get(i).getX(), squares.get(i).getY() - 1});
-            }
-        }
-    }
-
-    public void excludeDiagonalAroundShip(List<Square> squares) {
-        for (int i = 0; i < squares.size(); i++) {
-            if (input.validateCords(squares.get(i).getX() + 1, squares.get(i).getY() + 1)) {
-                excludedFields.add(new int[]{squares.get(i).getX() + 1, squares.get(i).getY() + 1});
-            }
-            if (input.validateCords(squares.get(i).getX() - 1, squares.get(i).getY() + 1)) {
-                excludedFields.add(new int[]{squares.get(i).getX() - 1, squares.get(i).getY() + 1});
-            }
-            if (input.validateCords(squares.get(i).getX() + 1, squares.get(i).getY() - 1)) {
-                excludedFields.add(new int[]{squares.get(i).getX() + 1, squares.get(i).getY() - 1});
-            }
-            if (input.validateCords(squares.get(i).getX() - 1, squares.get(i).getY() - 1)) {
-                excludedFields.add(new int[]{squares.get(i).getX() - 1, squares.get(i).getY() - 1});
-            }
-        }
-    }
 
     public void setClassFieldsAfterMultiHit(int[] cords) {
         excludedFields.add(cords);
@@ -221,7 +176,7 @@ public class HardComputer extends Player {
     }
 
     public void setClassFieldsAfterSinkShip(List<Square> squares) {
-        excludeSquaresAroundShip(squares);
+        excludeSquaresAroundShip(squares, excludedFields);
         hitInARow = 0;
     }
 
@@ -253,8 +208,8 @@ public class HardComputer extends Player {
             }
             try {
                 cords = drawFromPossibleMoves(possibleMoves);
-            }catch (Exception e){
-                handleShot(enemyBoard,yourGuesses,enemyPlayer);
+            } catch (Exception e) {
+                handleShot(enemyBoard, yourGuesses, enemyPlayer);
             }
             if (enemyBoard.getOcean()[cords[0]][cords[1]].getSquareStatus().equals(SquareStatus.SHIP)) {
                 setClassFieldsAfterMultiHit(cords);

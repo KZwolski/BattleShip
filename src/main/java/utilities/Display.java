@@ -15,6 +15,7 @@ public class Display {
     private final String SHIP_SUNK = "\uD83D\uDCA3";
     private final String HIT_MISS = "\uD83C\uDFAF";
     private final String HIT_SHIP = "\uD83D\uDE80";
+    public static final String YELLOW = "\033[0;33m";  // YELLOW
 
     private final String CLEAR_SCREEN = "\033[H\033[2J";
 
@@ -61,7 +62,7 @@ public class Display {
                 } else if (ocean[i][j].getSquareStatus().equals(SquareStatus.SHIP)){
                     System.out.print(RESET + SHIP + "  ");
                 } else if (ocean[i][j].getSquareStatus().equals(SquareStatus.MISSED)){
-                    System.out.print(RESET+HIT_MISS + "  ");
+                    System.out.print(YELLOW+HIT_MISS + "  ");
                 } else if (ocean[i][j].getSquareStatus().equals(SquareStatus.HIT)){
                     System.out.print(DARK_RED+HIT_SHIP + "  ");
                 } else if (ocean[i][j].getSquareStatus().equals(SquareStatus.SINK)){
@@ -75,7 +76,7 @@ public class Display {
         System.out.print(SHIP + RESET +" Ship ");
         System.out.print(LIGHT_BLUE+WATER + RESET +" Water ");
         System.out.println(BLACK+SHIP_SUNK + RESET +" Ship sunk ");
-        System.out.print(HIT_MISS + " Hit(Miss) ");
+        System.out.print(YELLOW+HIT_MISS + RESET +" Hit(Miss) ");
         System.out.print(DARK_RED+HIT_SHIP + RESET +" Hit(Ship)");
 
     }

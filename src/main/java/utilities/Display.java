@@ -17,7 +17,6 @@ public class Display {
     private final String HIT_SHIP = "\uD83D\uDE80";
     public static final String YELLOW = "\033[0;33m";  // YELLOW
 
-    private final String CLEAR_SCREEN = "\033[H\033[2J";
 
 
 

@@ -27,14 +27,10 @@ public class Input {
             if (checkForValidInput(move)) {
                 int x = convertInputIntoRow(move);
                 int y = convertInputIntoColumn(move);
-                if (validateCords(x, y)) {
-                    return new int[]{x, y};
-                } else {
-                    printer.consolePrint("Wrong coordinates!");
-                    return getCoordinates();
+                return new int[]{x, y};
                 }
+            printer.consolePrint("Wrong coordinates!");
             }
-        }
 
     }
 
@@ -55,6 +51,7 @@ public class Input {
             case "H", "V" -> {
                 return letter;
             }
+            default -> getDirection();
         }
         return getDirection();
     }

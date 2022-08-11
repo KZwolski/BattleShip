@@ -1,6 +1,7 @@
 package logic;
 
 import board.Board;
+import dataManager.DataManager;
 import player.*;
 import ship.ShipType;
 import utilities.Display;
@@ -21,7 +22,20 @@ public class Game {
         }
 
     }
+    public Player determineWinner(Player player1, Player player2) {
+        if (player1.isStillAlive()) {
+            return player1;
+        } else{
+            return player2;
+        }
+    }
+    public void saveScore(Player player){
+        DataManager.writeToFile(String.valueOf(player.getScore()));
+    }
 
+    public void displayWinner(Player player){
+        printer.consolePrint("Congrats "+player.getPlayerName() + " won the game!");
+    }
     public void startNewGame() {
         printer.gameTypeMenu();
         String input = Input.getUserInput();
@@ -49,6 +63,9 @@ public class Game {
             playerShooting(player1Board,player2Board, player2Guess,user2,user1);
 
         }
+        Player winner = determineWinner(user1,user2);
+        displayWinner(winner);
+        displayWinner(winner);
     }
     public void playerShooting(Board enemyBoard,Board userShips, Board userGuess, UserPlayer player, Player enemyPLayer){
         printer.consolePrint(player.getPlayerName()+"'s " + "Shooting phase now");
@@ -115,9 +132,12 @@ public class Game {
         while(user1.isStillAlive() && user2.isStillAlive()){
             playerShooting(player2Board,player1Board, player1Guess,user1,user2);
             computerShooting(player1Board, player2Guess, user2, user1);
-            printer.printBoard(player2Board.getOcean());
 
         }
+        Player winner = determineWinner(user1,user2);
+        displayWinner(winner);
+        saveScore(user1);
+
     }
 
     public void computerShooting(Board enemyBoard, Board userGuess, Player player, Player enemyPLayer){
@@ -126,6 +146,7 @@ public class Game {
     }
 
     public static void displayHighScores() {
+        DataManager.bestScoreRead();
     }
 
     public void exitGame() {

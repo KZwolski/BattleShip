@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
-
 import player.Player;
-import player.UserPlayer;
 import ship.Ship;
 import ship.ShipType;
 import utilities.Display;
@@ -32,7 +30,7 @@ public abstract class BoardFactory {
         int[] coordinates = input.getCoordinates();
         String direction = input.getDirection();
         while (checkAreThereShips(shipType.getLength(), direction, board, coordinates)) {
-            System.out.println("You cannot place ship there :(, try again! ");
+            printer.consolePrint("You cannot place ship there :(, try again! ");
             coordinates = input.getCoordinates();
             direction = input.getDirection();
         }
@@ -69,9 +67,9 @@ public abstract class BoardFactory {
         int x = coordinates[0];
         int y = coordinates[1];
         for (int i = 0; i < shipSize; i++) {
-            if (direction == "V") {
+            if (Objects.equals(direction, "V")) {
                 x += i;
-            } else if (direction == "H") {
+            } else if (Objects.equals(direction, "H")) {
                 y += i;
             }
             if (input.validateCords(x, y)) {

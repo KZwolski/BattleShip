@@ -2,11 +2,6 @@ package board;
 
 public class Board extends BoardFactory {
     private final int BOARD_SIZE = 10;
-
-    public int getBOARD_SIZE() {
-        return BOARD_SIZE;
-    }
-
     private Square[][] ocean = new Square[BOARD_SIZE][BOARD_SIZE];
 
     public Board() {

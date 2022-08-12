@@ -1,5 +1,7 @@
 package dataManager;
 
+
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
@@ -34,7 +36,7 @@ public class DataManager {
 
     public void bestScoreSort(List<String> lines) {
         Map<Integer, String> scoreMap = new HashMap<>();
-        System.out.println("Best scores: ");
+        System.out.println("TOP 10 SCORES: ");
         for (String line : lines) {
             String scoreLine = String.valueOf(line);
             String[] parts = String.valueOf(scoreLine).split(",");
@@ -49,11 +51,20 @@ public class DataManager {
 
     public static void printMap(Map<Integer,String> map) {
         Set<Map.Entry<Integer, String>> scoreSet= map.entrySet();
-        for (Map.Entry<Integer, String> entry : scoreSet) {
-            Integer key = entry.getKey();
-            String value = entry.getValue();
-            System.out.println(key + " => " + value);
-        }
+        int listPosition;
+        int listLimit;
+        listPosition = 0;
+        listLimit = 10;
+        System.out.println("========================");
+        System.out.println("Place. Score => Player Name");
+        System.out.println("========================");
+        for (Map.Entry<Integer, String> entry: scoreSet ) {
+             if( listPosition < listLimit ) {
+                Integer key = entry.getKey();
+                String value = entry.getValue();
+                listPosition += 1;
+                System.out.println(listPosition+". "+ key + " => " + value);
+        }}
         System.out.println("========================");
     }
 

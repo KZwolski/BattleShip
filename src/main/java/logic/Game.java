@@ -7,10 +7,26 @@ import ship.ShipType;
 import utilities.Display;
 import utilities.Input;
 
+/**
+ * Class responsible for handling all states of the game
+ */
 public class Game {
+    /**
+     * new instance of Display Class to handle displaying info to the user
+     *
+     * @see Display
+     */
     Display printer = new Display();
+    /**
+     * new instance of Input class for handling user's input
+     *
+     * @see Input
+     */
     Input input = new Input();
 
+    /**
+     * Method responsible for initializing game
+     */
     public void initGame() {
         printer.welcomeMenu();
         String input = Input.getUserInput();
@@ -22,6 +38,13 @@ public class Game {
         }
 
     }
+
+    /**
+     * Method used to determine winner
+     * @param player1 Instance of first player
+     * @param player2 Instance of second player
+     * @return instance of player that won the game
+     */
     public Player determineWinner(Player player1, Player player2) {
         if (player1.isStillAlive()) {
             return player1;
@@ -29,14 +52,29 @@ public class Game {
             return player2;
         }
     }
+
+    /**
+     * Method used for saving score
+     *
+     * @param player Instance of player that won
+     */
     public void saveScore(Player player){
         DataManager dataManager = new DataManager();
         dataManager.writeToFile(String.valueOf(player.getScore()),String.valueOf(player.getPlayerName()));
     }
 
+    /**
+     * Method used for displaying the winner message
+     *
+     * @param player Instance of player that won
+     */
     public void displayWinner(Player player){
         printer.consolePrint("Congrats "+player.getPlayerName() + " won the game witch "+player.getScore()+" points!");
     }
+
+    /**
+     * Method responsible for choosing game type
+     */
     public void startNewGame() {
         printer.gameTypeMenu();
         String input = Input.getUserInput();
@@ -48,6 +86,9 @@ public class Game {
         }
     }
 
+    /**
+     * Method responsible to handle player vs player game
+     */
     public void playerVsPlayer() {
         Board player1Board = new Board();
         Board player2Board = new Board();
@@ -68,6 +109,15 @@ public class Game {
         displayWinner(winner);
         saveScore(winner);
     }
+
+    /**
+     * Method handling playerShooting phase
+     * @param enemyBoard board with enemy's ships
+     * @param userShips board with user's ships
+     * @param userGuess board with user's guesses
+     * @param player Instance of player that is shooting
+     * @param enemyPLayer Instance of enemy player
+     */
     public void playerShooting(Board enemyBoard,Board userShips, Board userGuess, UserPlayer player, Player enemyPLayer){
         printer.consolePrint(player.getPlayerName()+"'s " + "Shooting phase now");
         printer.consolePrint("Your ships");
@@ -81,6 +131,12 @@ public class Game {
         printer.consolePrint(String.valueOf(player.getScore()));
 
     }
+
+    /**
+     * Method responsible for choosing ship placement
+     * @param board board on which ships will be placed
+     * @param userPlayer Instance of player that is placing ships
+     */
     public void choseShipPlacement(Board board,Player userPlayer){
         printer.shipPlacementMenu();
         String input = Input.getUserInput();
@@ -92,18 +148,30 @@ public class Game {
         }
     }
 
+    /**
+     * Method responsible for placing ships randomly
+     * @param board board on which ships will be placed
+     * @param userPLayer Instance of player that is placing ships
+     */
     private void placeShipsRandomly(Board board, Player userPLayer) {
         for(int i=0; i<ShipType.values().length;i++){
             board.randomPlacement(board,ShipType.values()[i],userPLayer);
         }
     }
-
+    /**
+     * Method responsible for placing ships manually
+     * @param board board on which ships will be placed
+     * @param userPLayer Instance of player that is placing ships
+     */
     private void placeShipsManually(Board board, Player userPLayer) {
         for(int i=0; i<ShipType.values().length;i++){
             board.manualPlacement(board,ShipType.values()[i],userPLayer);
         }
     }
 
+    /**
+     * Method responsible for choosing game difficulty vs AI
+     */
     public void playerVsAi() {
         printer.computerDifficultyMenu();
         String input = Input.getUserInput();
@@ -114,6 +182,12 @@ public class Game {
         }
 
     }
+
+    /**
+     * Method responsible for handling player vs computer game
+     *
+     * @param level number representing level of the computer player
+     */
 
     private void playerVsComputer(int level){
         Board player1Board = new Board();
@@ -141,15 +215,30 @@ public class Game {
 
     }
 
+    /**
+     * Method responsible for handling computer shooting phase
+     *
+     * @param enemyBoard board with enemy ships
+     * @param userGuess board with computer's guesses
+     * @param player Instance of computer player that is shooting
+     * @param enemyPLayer Instance of enemy userPlayer
+     */
     public void computerShooting(Board enemyBoard, Board userGuess, Player player, Player enemyPLayer){
         printer.consolePrint(player.getPlayerName()+"'s " + "Shooting phase now");
         player.handleShot(enemyBoard,userGuess,enemyPLayer);
     }
 
+    /**
+     * Method used for displaying high scores
+     */
     public static void displayHighScores() {
         DataManager readData = new DataManager();
         readData.bestScoreRead();
     }
+
+    /**
+     * Method used for handling game exit 
+     */
 
     public void exitGame() {
         printer.consolePrint(("Ok, Bye!"));

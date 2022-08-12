@@ -11,30 +11,73 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-public abstract class Player {
-    protected String playerName;
+/**
+ * Abstract class storing methods shared by classes that extends it
+ */
 
+public abstract class Player {
+    /**
+     * Field representing name of player
+     */
+    protected String playerName;
+    /**
+     * Represents player's board
+     */
     protected Board board;
+    /**
+     * Value used to determine winner
+     */
 
     protected boolean isAlive;
+    /**
+     * Stores player's current game score
+     */
     protected int score;
+    /**
+     * Instance of input class, used to handle user inputs
+     *
+     * @see Input
+     */
 
     protected Input input = new Input();
 
+    /**
+     * Method used to get access to user's score
+     *
+     * @return user's score as Integer
+     */
     public int getScore() {
         return score;
     }
 
+    /**
+     * Class field storing player's ships
+     */
     protected List<Ship> playerShips = new ArrayList<>();
 
+    /**
+     * Method used for getting access to player's ships list
+     *
+     * @return list of ships
+     */
     public List<Ship> getPlayerShips() {
         return playerShips;
     }
 
+    /**
+     * Method used to add new ship to player's ships list
+     *
+     * @param ship Object of type ship
+     */
     public void addShips(Ship ship) {
         this.playerShips.add(ship);
     }
 
+    /**
+     * Method checking if user is still alive
+     *
+     * @return true if user didn't lose all the ships
+     */
     public boolean isStillAlive() {
         for (int i = 0; i < playerShips.size(); i++) {
             for (int j = 0; j < playerShips.get(i).getOccupiedCells().size(); j++) {
@@ -46,12 +89,29 @@ public abstract class Player {
         return false;
     }
 
+    /**
+     * Method used to get access to player's name
+     *
+     * @return String stored in playerName field
+     */
     public String getPlayerName() {
         return playerName;
     }
 
+    /**
+     * Method used for getting valid coordinates for shooting
+     *
+     * @return array of ints storing row and column of shot
+     */
     public abstract int[] getValidShotCords();
 
+    /**
+     * Method responsible for handling shot of player
+     *
+     * @param enemyBoard enemy board with ships
+     * @param yourGuesses board with users guesses
+     * @param enemyPlayer object of type Player
+     */
     public void handleShot(Board enemyBoard, Board yourGuesses, Player enemyPlayer) {
         int[] cords = getValidShotCords();
         if (checkSquareStatus(cords[0], cords[1], yourGuesses.getOcean())) {
@@ -64,7 +124,14 @@ public abstract class Player {
         }
     }
 
-    ;
+    /**
+     * Method used for changing square status to "HIT" after shot
+     *
+     * @param x row of the shot
+     * @param y column of the shot
+     * @param enemyBoard board with enemy's ships
+     * @param playersBoard board with player's guesses
+     */
 
     public void markShot(int x, int y, Square[][] enemyBoard, Square[][] playersBoard) {
         if (enemyBoard[x][y].getSquareStatus().equals(SquareStatus.SHIP)) {
@@ -81,6 +148,12 @@ public abstract class Player {
 
     ;
 
+    /**
+     * Method used for sinking the ship
+     *
+     * @param squares list of squares to be sunk
+     * @param board player's guesses board
+     */
     public void sinkShip(List<Square> squares, Board board) {
         for (Square square : squares) {
             square.setSquareStatus(SquareStatus.SINK);
@@ -92,6 +165,12 @@ public abstract class Player {
 
     ;
 
+    /**
+     * Method used for checking if sinking the ship is possible
+     *
+     * @param squares list of squares to search in
+     * @return true if sink is possible
+     */
     public boolean isPossibleSink(List<Square> squares) {
         for (Square square : squares) {
             if (!square.getSquareStatus().equals(SquareStatus.HIT)) {
@@ -103,6 +182,14 @@ public abstract class Player {
 
     ;
 
+    /**
+     * Method used to get all fields of the shot ship
+     *
+     * @param x row of the shot
+     * @param y column of the shot
+     * @param player Object of type Player
+     * @return list of squares that represent single Ship
+     */
     public List<Square> shipFields(int x, int y, Player player) {
         List<Square> squares = new ArrayList<>();
         for (int i = 0; i < player.getPlayerShips().size(); i++) {
@@ -116,15 +203,36 @@ public abstract class Player {
         return squares;
     }
 
-
+    /**
+     * Method checking if square status is HIT or MISSED, used for checking if the field was already shot
+     *
+     * @param x row of the shot coords
+     * @param y column of the shot coords
+     * @param ocean player's board
+     * @return false if square status is HIT or MISSED
+     */
     public boolean checkSquareStatus(int x, int y, Square[][] ocean) {
         return ocean[x][y].getSquareStatus().equals(SquareStatus.HIT) || ocean[x][y].getSquareStatus().equals(SquareStatus.MISSED);
     }
+
+    /**
+     * Method used for excluding fields around sunk ship to limit possible shots
+     *
+     * @param squares list of squares representing ship
+     * @param excludedFields list of excluded fields
+     */
     public void excludeSquaresAroundShip(List<Square> squares,List<int[]> excludedFields) {
         excludeHorizontalAndVerticalAroundShip(squares,excludedFields);
         excludeDiagonalAroundShip(squares,excludedFields);
 
     }
+
+    /**
+     * Method used for excluding  Horizontal and Vertical fields around sunk ship
+     *
+     * @param squares list of squares representing ship
+     * @param excludedFields list of excluded fields
+     */
 
     public void excludeHorizontalAndVerticalAroundShip(List<Square> squares, List<int[]> excludedFields) {
         for (int i = 0; i < squares.size(); i++) {
@@ -142,6 +250,12 @@ public abstract class Player {
             }
         }
     }
+    /**
+     * Method used for excluding diagonal fields around sunk ship
+     *
+     * @param squares list of squares representing ship
+     * @param excludedFields list of excluded fields
+     */
 
     public void excludeDiagonalAroundShip(List<Square> squares,List<int[]> excludedFields) {
         for (int i = 0; i < squares.size(); i++) {
@@ -160,6 +274,12 @@ public abstract class Player {
         }
     }
 
+    /**
+     * Method drawing coordinates from possible moves, used by computer player
+     *
+     * @param possibleMoves list of possible moves
+     * @return next shot coordinates
+     */
     public int[] drawFromPossibleMoves(List<int[]> possibleMoves) {
         int randomNUmber = ThreadLocalRandom.current().nextInt(0, possibleMoves.size());
         return new int[]{possibleMoves.get(randomNUmber)[0], possibleMoves.get(randomNUmber)[1]};

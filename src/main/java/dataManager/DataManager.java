@@ -39,32 +39,39 @@ public class DataManager {
     /**
      * Method responsible for reading best scores from the file
      */
-    public void bestScoreRead() {
-        List<String> lines;
+    public List<String> bestScoreReadFromFile() {
+        List<String> lines = null;
 
         try {
             lines = Files.readAllLines(Paths.get("stats.txt"), StandardCharsets.UTF_8);
             bestScoreSort(lines);
+            
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return lines;
+    }
+
+    public void bestScoreRead(){
+        List<String> lines = bestScoreReadFromFile();
+        Map<Integer, String> scoresMap = bestScoreSort(lines);
+        printMap(scoresMap);
+
     }
 
     /**
      * Method responsible for sorting scores from the file
      * @param lines lines
      */
-    public void bestScoreSort(List<String> lines) {
+    public Map<Integer, String> bestScoreSort(List<String> lines) {
         Map<Integer, String> scoreMap = new HashMap<>();
-        printer.consolePrint("TOP 10 SCORES: ");
         for (String line : lines) {
             String scoreLine = String.valueOf(line);
             String[] parts = String.valueOf(scoreLine).split(",");
             Integer score =Integer.valueOf(parts[0]);
             scoreMap.put(score, parts[1]);
         }
-        Map<Integer, String> scoresMap = new TreeMap<>(scoreMap).descendingMap();
-        printMap(scoresMap);
+        return new TreeMap<>(scoreMap).descendingMap();
     }
 
 
@@ -72,12 +79,13 @@ public class DataManager {
      * Method printing the map
      * @param map map
      */
-    public static void printMap(Map<Integer,String> map) {
+    public void printMap(Map<Integer,String> map) {
         Set<Map.Entry<Integer, String>> scoreSet= map.entrySet();
         int listPosition;
         int listLimit;
         listPosition = 0;
         listLimit = 10;
+        printer.consolePrint("TOP 10 SCORES: ");
         printer.consolePrint("========================");
         printer.consolePrint("Place. Score => Player Name");
         printer.consolePrint("========================");
